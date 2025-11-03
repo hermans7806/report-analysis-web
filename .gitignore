@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# Firebase service account
+firebase-service-account.json
+
+# Optional OS files
+.DS_Store
