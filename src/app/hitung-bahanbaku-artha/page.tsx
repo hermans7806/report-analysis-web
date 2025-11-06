@@ -5,14 +5,32 @@ import { motion } from "framer-motion";
 import UploadCard from "@/components/UploadCard";
 import { Card } from "@/components/ui/card";
 import { uploadTransactions } from "@/lib/api";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { Loader2 } from "lucide-react";
 
 export default function HitungBahanBakuArthaPage() {
-  const [loading, setLoading] = useState(false);
+  // ✅ Protect page with Firebase auth
+  const { user, loading } = useAuthGuard();
+
+  const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
   const [result, setResult] = useState<any>(null);
 
+  // ✅ Show spinner while checking auth
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <Loader2 className="animate-spin w-6 h-6 mr-2 text-green-600" />
+        <span>Memeriksa sesi login...</span>
+      </div>
+    );
+  }
+
+  // ✅ If not logged in, user is redirected by hook
+  if (!user) return null;
+
   const handleUpload = async (file: File) => {
-    setLoading(true);
+    setUploading(true);
     setUploadMessage(null);
 
     try {
@@ -38,7 +56,7 @@ export default function HitungBahanBakuArthaPage() {
       console.error(err);
       setUploadMessage("❌ Upload gagal. Periksa server atau file.");
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
@@ -48,7 +66,7 @@ export default function HitungBahanBakuArthaPage() {
         title="Hitung Bahan Baku Artha"
         accentColor="green"
         onUpload={handleUpload}
-        loading={loading}
+        loading={uploading}
         uploadMessage={uploadMessage}
         setUploadMessage={setUploadMessage}
       />

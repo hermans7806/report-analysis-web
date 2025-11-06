@@ -1,49 +1,65 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import UploadCard from "@/components/UploadCard";
 import { Card } from "@/components/ui/card";
 import { uploadPendapatan, getTotals } from "@/lib/api";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { Loader2 } from "lucide-react";
 
 export default function HitungPendapatanPage() {
-  const [loading, setLoading] = useState(false);
+  // ✅ Protect page
+  const { user, loading } = useAuthGuard();
+
+  const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
   const [totals, setTotals] = useState<any>(null);
 
+  // Show loading spinner while checking Firebase auth
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <Loader2 className="animate-spin w-6 h-6 mr-2 text-blue-600" />
+        <span>Memeriksa sesi login...</span>
+      </div>
+    );
+  }
+
+  // If not logged in, the hook already redirects to /login
+  if (!user) return null;
+
   const handleUpload = async (file: File) => {
-    setLoading(true);
+    setUploading(true);
     setUploadMessage(null);
 
     try {
-      // Upload file to backend
+      // ✅ Upload file to backend
       await uploadPendapatan(file);
       setUploadMessage("✅ File berhasil diunggah dan disimpan ke Firebase.");
 
-      // Fetch totals from backend
+      // ✅ Fetch totals from backend
       const totalsData = await getTotals();
       setTotals(totalsData);
     } catch (err) {
       console.error(err);
       setUploadMessage("❌ Upload gagal. Periksa server atau file.");
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 space-y-8">
-      {/* ✅ Reusable UploadCard */}
       <UploadCard
         title="Hitung Pendapatan Laundry"
         accentColor="blue"
         onUpload={handleUpload}
-        loading={loading}
+        loading={uploading}
         uploadMessage={uploadMessage}
         setUploadMessage={setUploadMessage}
       />
 
-      {/* ✅ Results Section */}
       {totals && (
         <motion.div
           initial={{ opacity: 0 }}
