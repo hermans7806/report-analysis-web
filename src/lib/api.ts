@@ -12,21 +12,15 @@ export const api = axios.create({
 
 // ✅ Interceptor to attach Firebase ID token if logged in
 api.interceptors.request.use(async (config) => {
-  // Skip if Authorization is already set (e.g., for /auth/google)
-  if (!config.headers.Authorization) {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const token = await user.getIdToken();
-        config.headers.Authorization = `Bearer ${token}`;
-      } else if (process.env.NEXT_PUBLIC_API_TOKEN) {
-        // fallback static token if user not logged in
-        config.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
-      }
-    } catch (error) {
-      console.warn("Failed to attach Firebase token:", error);
-    }
+  const user = auth.currentUser;
+  
+  if (user) {
+    const token = await user.getIdToken(true);
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    console.warn("⚠️ No Firebase user logged in — request may fail (401)");
   }
+
   return config;
 });
 
@@ -53,6 +47,31 @@ export const uploadTransactions = async (file: File) => {
 export const getTotals = async () => {
   const res = await api.get("/totals");
   return res.data;
+};
+
+// ==========================
+// 📦 TIPE LAYANAN API
+// ==========================
+export const tipeLayananAPI = {
+  getAll: async () => {
+    const res = await api.get("/tipe-layanan");
+    return res.data;
+  },
+
+  create: async (data: { nama_layanan: string; harga_bonus: number }) => {
+    const res = await api.post("/tipe-layanan", data);
+    return res.data;
+  },
+
+  update: async (id: string, data: { nama_layanan: string; harga_bonus: number }) => {
+    const res = await api.put(`/tipe-layanan/${id}`, data);
+    return res.data;
+  },
+
+  remove: async (id: string) => {
+    const res = await api.delete(`/tipe-layanan/${id}`);
+    return res.data;
+  },
 };
 
 export default api;
