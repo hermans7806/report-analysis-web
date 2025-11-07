@@ -6,7 +6,8 @@ import UploadCard from "@/components/UploadCard";
 import { Card } from "@/components/ui/card";
 import { uploadPendapatan, getTotals } from "@/lib/api";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function HitungPendapatanPage() {
   // ✅ Protect page
@@ -51,6 +52,13 @@ export default function HitungPendapatanPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 space-y-8">
+      {/* 🔹 Back to Home */}
+      <div className="mb-4">
+        <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Kembali ke Beranda
+        </Link>
+      </div>
       <UploadCard
         title="Hitung Pendapatan Laundry"
         accentColor="blue"

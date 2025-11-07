@@ -10,7 +10,9 @@ import {
   ChevronRight,
   Upload,
   Wallet,
+  ArrowLeft
 } from "lucide-react";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 
@@ -93,6 +95,13 @@ export default function HitungBonusPage() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-4xl"
       >
+        {/* 🔹 Back to Home */}
+        <div className="mb-4">
+          <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali ke Beranda
+          </Link>
+        </div>
         <Card className="p-6 shadow-md border bg-white">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">
             📊 Hitung Bonus Staff
