@@ -111,6 +111,21 @@ export default function HitungPendapatanPage() {
                   )
                 )}
               </ul>
+
+              <hr className="my-3" />
+
+              <p>
+                <strong>Total Pengeluaran Artha:</strong>{" "}
+                <span className="text-blue-600 font-semibold">
+                  Rp {totals.pengeluaran_artha.toLocaleString("id-ID")}
+                </span>
+              </p>
+              <p>
+                <strong>Total Pengeluaran Pusat:</strong>{" "}
+                <span className="text-blue-600 font-semibold">
+                  Rp {totals.pengeluaran_pusat.toLocaleString("id-ID")}
+                </span>
+              </p>
             </div>
           </Card>
         </motion.div>
