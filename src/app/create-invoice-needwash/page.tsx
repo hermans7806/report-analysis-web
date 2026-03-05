@@ -78,12 +78,15 @@ export default function CreateInvoiceNeedwashPage() {
         selectedCustomer.shown_name
       );
 
-      const blob = new Blob([response.data], { type: "application/pdf" });
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
       const url = window.URL.createObjectURL(blob);
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "invoice-needwash.pdf";
+      link.download = "invoice-needwash.xlsx";
       document.body.appendChild(link);
       link.click();
       link.remove();
