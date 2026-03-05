@@ -70,6 +70,12 @@ export default function HomePage() {
                   🧾 Hitung Bahan Baku Artha
                 </Button>
               </Link>
+
+              <Link href="/create-invoice-needwash" className="w-full">
+                <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-6 text-lg font-semibold">
+                  🧾 Create Invoice Needwash
+                </Button>
+              </Link>
             </div>
 
             {/* Separator */}
@@ -80,6 +86,12 @@ export default function HomePage() {
               <Link href="/tipe-layanan" className="w-full">
                 <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-6 text-lg font-semibold">
                   ⚙️ Tipe Layanan
+                </Button>
+              </Link>
+
+              <Link href="/needwash-add-invoice-customer" className="w-full">
+                <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white py-6 text-lg font-semibold">
+                  🧾 Needwash - Add Invoice Customer
                 </Button>
               </Link>
             </div>

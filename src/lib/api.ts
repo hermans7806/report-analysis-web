@@ -74,4 +74,45 @@ export const tipeLayananAPI = {
   },
 };
 
+// ==========================
+// 🧾 CREATE INVOICE
+// ==========================
+export const createInvoice = async (
+  file: File,
+  customerName: string,
+  shownName: string
+) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("customer_name", customerName);
+  formData.append("shown_name", shownName);
+
+  return api.post("/create-invoice", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    responseType: "blob",
+  });
+};
+
+// ==========================
+// 🧾 INVOICE CUSTOMER
+// ==========================
+export const invoiceCustomerAPI = {
+  getAll: async () => {
+    const res = await api.get("/invoice-customer");
+    return res.data;
+  },
+
+  create: async (data: { customer_name: string; shown_name: string }) => {
+    const res = await api.post("/invoice-customer", data);
+    return res.data;
+  },
+
+  remove: async (id: string) => {
+    const res = await api.delete(`/invoice-customer/${id}`);
+    return res.data;
+  },
+};
+
 export default api;
